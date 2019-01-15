@@ -12,6 +12,7 @@
 		0C31A23121EB6B8100BCE36F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C31A22F21EB6B8100BCE36F /* Main.storyboard */; };
 		0C31A23321EB6B8300BCE36F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C31A23221EB6B8300BCE36F /* Assets.xcassets */; };
 		0C31A23621EB6B8300BCE36F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C31A23421EB6B8300BCE36F /* LaunchScreen.storyboard */; };
+		0C31A23E21EB6D2900BCE36F /* IMG_1354.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 0C31A23D21EB6D2900BCE36F /* IMG_1354.m4v */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		0C31A23221EB6B8300BCE36F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C31A23521EB6B8300BCE36F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0C31A23721EB6B8300BCE36F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0C31A23D21EB6D2900BCE36F /* IMG_1354.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = IMG_1354.m4v; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				0C31A22B21EB6B8100BCE36F /* AppDelegate.swift */,
 				0C31A22D21EB6B8100BCE36F /* ViewController.swift */,
+				0C31A23D21EB6D2900BCE36F /* IMG_1354.m4v */,
 				0C31A22F21EB6B8100BCE36F /* Main.storyboard */,
 				0C31A23221EB6B8300BCE36F /* Assets.xcassets */,
 				0C31A23421EB6B8300BCE36F /* LaunchScreen.storyboard */,
@@ -124,6 +127,7 @@
 			files = (
 				0C31A23621EB6B8300BCE36F /* LaunchScreen.storyboard in Resources */,
 				0C31A23321EB6B8300BCE36F /* Assets.xcassets in Resources */,
+				0C31A23E21EB6D2900BCE36F /* IMG_1354.m4v in Resources */,
 				0C31A23121EB6B8100BCE36F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
