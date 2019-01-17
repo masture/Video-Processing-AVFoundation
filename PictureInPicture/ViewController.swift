@@ -26,9 +26,7 @@ class ViewController: UIViewController {
     var firstAsset: AVURLAsset!
     var secondAsset: AVURLAsset!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    fileprivate func loadVideoAssets() {
         let videoURL = Bundle.main.url(forResource: "IMG_1354", withExtension: "m4v")!
         
         firstAsset = AVURLAsset(url: videoURL)
@@ -43,6 +41,12 @@ class ViewController: UIViewController {
         secondAsset.loadValuesAsynchronously(forKeys: assetKeysToLoad) {
             self.isSecondAssetLoaded = true
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        loadVideoAssets()
     }
 
     @IBAction func sliderChanged(_ sender: UISlider) {
@@ -167,7 +171,7 @@ class ViewController: UIViewController {
 //        let scaleSecondVideo = CGAffineTransform(scaleX: 1, y: 1)
         // Scale down the second vidoe by 50% both width and height wise
         let scaleSecondVideo = CGAffineTransform(scaleX: 0.25, y: 0.25)
-        let moveSecondVideo = CGAffineTransform(translationX: finalVideoSize.width/1.25, y: 0)
+        let moveSecondVideo = CGAffineTransform(translationX: finalVideoSize.width/2, y: finalVideoSize.height/2)
         
         secondLayerInstruction.setTransform(scaleSecondVideo.concatenating(moveSecondVideo), at: CMTime.zero)
         
@@ -193,6 +197,13 @@ class ViewController: UIViewController {
         
         videoComposition.animationTool = VAConstants.createAnimationTool(withBackgoundImage: (backgroundImageView.image?.cgImage)!, withSize: finalVideoSize)
         
+        
+       exportNewlyComposedVideo(composition: mixComposition, videoComposition: videoComposition)
+        
+    }
+
+    
+    func exportNewlyComposedVideo(composition mixComposition: AVMutableComposition, videoComposition: AVMutableVideoComposition) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .long
@@ -207,7 +218,7 @@ class ViewController: UIViewController {
         exporter.outputFileType = AVFileType.mov
         exporter.shouldOptimizeForNetworkUse = true
         exporter.videoComposition = videoComposition
-//        exporter.audioMix = audioMix
+        //        exporter.audioMix = audioMix
         
         print("Starting export asynchronously...")
         // Perform export asynchronously
@@ -218,9 +229,24 @@ class ViewController: UIViewController {
             }
         }
         
+    }
+    
+    
+    @IBAction func recordPressed(_ sender: UIButton) {
+        let videoURL = Bundle.main.url(forResource: "IMG_1354", withExtension: "m4v")!
+        let videoCompositionManager = VideoCompositionManager()
+        
+        videoCompositionManager.addVideoAssetURL(url: videoURL)
+        videoCompositionManager.delegate = self
+        let frame = CGRect(origin: (frameOfFirstVideo?.center)!, size: (frameOfFirstVideo?.bounds.size)!)
+        videoCompositionManager.addCenter(frameOfFirstVideo.center, andFrame: frame, withOrientationTransform: frameOfFirstVideo.transform)
+        videoCompositionManager.setBackgroundImage(image: (backgroundImageView.image?.cgImage)!)
+        
+        
+        videoCompositionManager.create()
         
     }
-
+    
     
     
     func exportDidFinish(_ session: AVAssetExportSession) {
@@ -278,6 +304,19 @@ extension ViewController: AVVideoCompositionValidationHandling {
         return true
     }
     
+}
+
+extension ViewController: VideoCompositionManagerProtocol {
     
-    
+    func exportCompleted(saved: Bool, error: Error?) {
+        let success = saved && (error == nil)
+        let title = success ? "Success" : "Error"
+        let message = success ? "Video saved" : "Failed to save video"
+        
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
