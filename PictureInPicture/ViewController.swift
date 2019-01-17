@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var frameOfSecondVideo: UIImageView!
     var transformOfSecondVideoFrame: CGAffineTransform?
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
     
     var isFirstAssetLoaded = false
     var isSecondAssetLoaded = false
@@ -123,6 +124,7 @@ class ViewController: UIViewController {
         // Create one video composition instruction. It will have multiple video composition layer instructions
         // We can have as many video ccompostion instructions as we need.
         let videoCompostionInstruction = AVMutableVideoCompositionInstruction()
+        videoCompostionInstruction.backgroundColor = UIColor.clear.cgColor
         
         videoCompostionInstruction.timeRange = timeRange
         
@@ -143,7 +145,8 @@ class ViewController: UIViewController {
 //        let scale = CGAffineTransform(scaleX: 0.3, y: 0.3)
         let firstFrameSize = CGSize(width: frameOfFirstVideo.layer.bounds.width, height: frameOfFirstVideo.layer.bounds.height)
         // TODO: At present while scaling is not taking into account the natural size of video
-        let scale = VAConstants.scale(of: firstFrameSize, with: finalVideoSize)
+        let scale = VAConstants.scale(of: firstFrameSize)
+//        let scale = CGAffineTransform(scaleX: 1, y: 1)
         
 //        let move = CGAffineTransform(translationX: finalVideoSize.width/2.0, y: finalVideoSize.height/2.0)
         let move = VAConstants.move(position: frameOfFirstVideo.center, inFrame: frameOfFirstVideo.layer.bounds, toVideoSize: finalVideoSize)
@@ -151,9 +154,10 @@ class ViewController: UIViewController {
         // Set position to appropriate position
 //        let rotate = CGAffineTransform(rotationAngle: CGFloat.pi/6.0)
         if let rotate = transformOfFirstVideoFrame {
-            firstLayerInstruction.setTransform(scale.concatenating(rotate).concatenating(move), at: CMTime.zero)
+            firstLayerInstruction.setTransform(rotate.concatenating(scale).concatenating(move), at: CMTime.zero)
+//            firstLayerInstruction.transform
         } else {
-            firstLayerInstruction.setTransform(scale.concatenating(move), at: CMTime.zero)
+            firstLayerInstruction.setTransform(move.concatenating(scale), at: CMTime.zero)
         }
         
         
@@ -175,18 +179,24 @@ class ViewController: UIViewController {
         // The instructions themselves will have one or more layer instructions
         
         let videoComposition = AVMutableVideoComposition()
+        
         videoComposition.instructions = [videoCompostionInstruction]
         videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
 //        videoComposition.renderSize = CGSize(width: firstVideoTrack.naturalSize.width, height: firstVideoTrack.naturalSize.height)
-        videoComposition.renderSize = firstVideoTrack.naturalSize
+        videoComposition.renderSize = finalVideoSize // Same sa UIScreen.bounds
+//        videoComposition.renderSize = firstVideoTrack.naturalSize
         
         // For debuggging purpose
         videoComposition.isValid(for: nil, timeRange: CMTimeRangeMake(start: CMTime.zero, duration: CMTime.positiveInfinity), validationDelegate: self)
         
+        // Add animation layer with a background image
+        
+        videoComposition.animationTool = VAConstants.createAnimationTool(withBackgoundImage: (backgroundImageView.image?.cgImage)!, withSize: finalVideoSize)
+        
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .short
+        dateFormatter.timeStyle = .full
         let date = dateFormatter.string(from: Date())
         let url = documentDirectory.appendingPathComponent("mergeVideo-\(date).mov")
         
