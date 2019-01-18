@@ -60,6 +60,26 @@ struct VAConstants {
         
     }
     
-    
+    static func createAnimationTool(withBackgoundImage image: CGImage, atPostion postion: CGPoint, withSize frame: CGSize) -> AVVideoCompositionCoreAnimationTool? {
+        // Get screen shot using the main view controller functionality
+        let backgroundLayer = CALayer()
+        backgroundLayer.contents = image
+        backgroundLayer.frame = CGRect(x: 0, y: 0, width: VAConstants.screenSize.width, height: VAConstants.screenSize.height)
+        backgroundLayer.masksToBounds = true
+        
+        let videoLayer = CALayer()
+        //        videoLayer.frame = CGRect(x: 100.0, y: 100.0, width: videoSize.width/2, height: videoSize.height/2)
+//        videoLayer.frame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
+        videoLayer.frame = CGRect(origin: CGPoint(x: postion.x - (frame.width/2), y: postion.y - (frame.height/2)), size: CGSize(width: frame.width, height: frame.height))
+        
+        let parentLayer = CALayer()
+        parentLayer.frame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
+        parentLayer.addSublayer(backgroundLayer)
+        parentLayer.addSublayer(videoLayer)
+        
+        return AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
+        //        return AVVideoCompositionCoreAnimationTool(additionalLayer: parentLayer, asTrackID: kCMPersistentTrackID_Invalid)
+        
+    }
     
 }

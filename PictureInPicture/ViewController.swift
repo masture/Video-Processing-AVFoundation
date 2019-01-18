@@ -233,18 +233,102 @@ class ViewController: UIViewController {
     
     
     @IBAction func recordPressed(_ sender: UIButton) {
-        let videoURL = Bundle.main.url(forResource: "IMG_1354", withExtension: "m4v")!
-        let videoCompositionManager = VideoCompositionManager()
+//        let videoURL = Bundle.main.url(forResource: "IMG_1354", withExtension: "m4v")!
+//        let videoCompositionManager = VideoCompositionManager()
+//
+//        videoCompositionManager.addVideoAssetURL(url: videoURL)
+//        videoCompositionManager.delegate = self
+//        let frame = CGRect(origin: (frameOfFirstVideo?.center)!, size: (frameOfFirstVideo?.bounds.size)!)
+//        videoCompositionManager.addCenter(frameOfFirstVideo.center, andFrame: frame, withOrientationTransform: frameOfFirstVideo.transform)
+//        videoCompositionManager.setBackgroundImage(image: (backgroundImageView.image?.cgImage)!)
+//
+//
+//        videoCompositionManager.create()
+
         
-        videoCompositionManager.addVideoAssetURL(url: videoURL)
-        videoCompositionManager.delegate = self
-        let frame = CGRect(origin: (frameOfFirstVideo?.center)!, size: (frameOfFirstVideo?.bounds.size)!)
-        videoCompositionManager.addCenter(frameOfFirstVideo.center, andFrame: frame, withOrientationTransform: frameOfFirstVideo.transform)
-        videoCompositionManager.setBackgroundImage(image: (backgroundImageView.image?.cgImage)!)
+        let mutableComposition = AVMutableComposition()
+        
+        let firstAddedMutableVideoTrack = mutableComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
+        
+        let timeRange = CMTimeRange(start: CMTime.zero, duration: firstAsset.duration)
+        let firstVideoTrackOfFirstAsset = firstAsset.tracks(withMediaType: .video).first!
+        
+        do {
+            try firstAddedMutableVideoTrack?.insertTimeRange(timeRange, of: firstVideoTrackOfFirstAsset, at: CMTime.zero)
+            
+        } catch {
+            fatalError("Error inserting time range into first compostion track! :\(error)")
+        }
+        
+        let mutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
+        mutableVideoCompositionInstruction.timeRange = timeRange
+        
+        let mutableVideoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: firstAddedMutableVideoTrack!)
+        mutableVideoLayerInstruction.setTransform(firstVideoTrackOfFirstAsset.preferredTransform, at: CMTime.zero)
+        mutableVideoCompositionInstruction.layerInstructions = [mutableVideoLayerInstruction]
+        
+        let mutableVideoComposition = AVMutableVideoComposition()
+        mutableVideoComposition.instructions = [mutableVideoCompositionInstruction]
+        mutableVideoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
+        mutableVideoComposition.renderSize = UIScreen.main.bounds.size
+        
+        // Create and add animation tool
+        let backgroundLayer = CALayer()
+        backgroundLayer.contents = backgroundImageView.image?.cgImage
+        backgroundLayer.frame = UIScreen.main.bounds
+        backgroundLayer.masksToBounds = true
+        
+        let videoLayer = CALayer()
+        let topLeftPosition = CGPoint(x: frameOfFirstVideo.center.x - (frameOfFirstVideo.bounds.width/2), y: UIScreen.main.bounds.height - frameOfFirstVideo.center.y - frameOfFirstVideo.bounds.height/2)
+        videoLayer.frame = CGRect(origin: topLeftPosition, size:frameOfFirstVideo.bounds.size)
         
         
-        videoCompositionManager.create()
+        // Add masking specifically for the xMasTemplate1Frame1 (mask image name is: xMasTemplate1Frame1Mask)
         
+//        NSString *maskImageName = [NSString stringWithFormat:@"%@Mask.png",self.imgNam];
+//        CALayer *mask = [CALayer layer];
+//        mask.contents = (id)[[UIImage imageNamed:maskImageName] CGImage];
+//        mask.frame = CGRectMake(self.maskOffsetX, self.maskOffsetY, self.frameWidth,  self.frameHeight);
+//        playerViewController.view.layer.mask = mask;
+//
+//        playerViewController.view.layer.masksToBounds = YES;
+        
+
+        
+//        let maskLayer = CAShapeLayer()
+//        let path = UIBezierPath(roundedRect: videoLayer.bounds, cornerRadius: videoLayer.bounds.height/2)
+//        maskLayer.path = path.cgPath
+//        videoLayer.mask = maskLayer
+//        videoLayer.masksToBounds = true
+        
+        let diplayFrameLayer = CALayer()
+        diplayFrameLayer.frame = videoLayer.frame
+        diplayFrameLayer.setAffineTransform(frameOfFirstVideo.transform.inverted())
+        diplayFrameLayer.contents = frameOfFirstVideo.image?.cgImage!
+        diplayFrameLayer.masksToBounds = true
+        diplayFrameLayer.contentsGravity = .resizeAspect
+        
+        let maskLayer = CALayer()
+        maskLayer.contents = UIImage(named: "xMasTemplate1Frame2Mask")?.cgImage
+        maskLayer.frame = diplayFrameLayer.bounds
+        maskLayer.contentsGravity = .resizeAspect
+        videoLayer.mask = maskLayer
+        videoLayer.masksToBounds = true
+        videoLayer.setAffineTransform(frameOfFirstVideo.transform.inverted())
+        
+        
+        let parentLayer = CALayer()
+        parentLayer.frame = UIScreen.main.bounds
+        
+        parentLayer.addSublayer(backgroundLayer)
+        parentLayer.addSublayer(videoLayer)
+        // Add masking layer on top of video layer
+//        parentLayer.addSublayer(maskLayer)
+        parentLayer.addSublayer(diplayFrameLayer)
+        
+        mutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
+        
+        exportNewlyComposedVideo(composition: mutableComposition, videoComposition: mutableVideoComposition)
     }
     
     
@@ -252,7 +336,11 @@ class ViewController: UIViewController {
     func exportDidFinish(_ session: AVAssetExportSession) {
         
         guard session.status == AVAssetExportSession.Status.completed,
-            let outputURL = session.outputURL else { return }
+            let outputURL = session.outputURL else {
+                
+                print("Export failed!")
+                return
+        }
         
         let saveVideoToPhotos = {
             PHPhotoLibrary.shared().performChanges({ PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputURL) }) { saved, error in
