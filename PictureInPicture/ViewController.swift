@@ -233,19 +233,7 @@ class ViewController: UIViewController {
     
     
     @IBAction func recordPressed(_ sender: UIButton) {
-//        let videoURL = Bundle.main.url(forResource: "IMG_1354", withExtension: "m4v")!
-//        let videoCompositionManager = VideoCompositionManager()
-//
-//        videoCompositionManager.addVideoAssetURL(url: videoURL)
-//        videoCompositionManager.delegate = self
-//        let frame = CGRect(origin: (frameOfFirstVideo?.center)!, size: (frameOfFirstVideo?.bounds.size)!)
-//        videoCompositionManager.addCenter(frameOfFirstVideo.center, andFrame: frame, withOrientationTransform: frameOfFirstVideo.transform)
-//        videoCompositionManager.setBackgroundImage(image: (backgroundImageView.image?.cgImage)!)
-//
-//
-//        videoCompositionManager.create()
-
-        
+   
         let mutableComposition = AVMutableComposition()
         
         let firstAddedMutableVideoTrack = mutableComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
@@ -283,23 +271,8 @@ class ViewController: UIViewController {
         videoLayer.frame = CGRect(origin: topLeftPosition, size:frameOfFirstVideo.bounds.size)
         
         
-        // Add masking specifically for the xMasTemplate1Frame1 (mask image name is: xMasTemplate1Frame1Mask)
-        
-//        NSString *maskImageName = [NSString stringWithFormat:@"%@Mask.png",self.imgNam];
-//        CALayer *mask = [CALayer layer];
-//        mask.contents = (id)[[UIImage imageNamed:maskImageName] CGImage];
-//        mask.frame = CGRectMake(self.maskOffsetX, self.maskOffsetY, self.frameWidth,  self.frameHeight);
-//        playerViewController.view.layer.mask = mask;
-//
-//        playerViewController.view.layer.masksToBounds = YES;
-        
+        // Add masking specifically for the xMasTemplate1Frame2 (mask image name is: xMasTemplate1Frame2Mask)
 
-        
-//        let maskLayer = CAShapeLayer()
-//        let path = UIBezierPath(roundedRect: videoLayer.bounds, cornerRadius: videoLayer.bounds.height/2)
-//        maskLayer.path = path.cgPath
-//        videoLayer.mask = maskLayer
-//        videoLayer.masksToBounds = true
         
         let diplayFrameLayer = CALayer()
         diplayFrameLayer.frame = videoLayer.frame
