@@ -66,25 +66,10 @@
                                     <action selector="recordPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xuO-A4-Omu"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="xMasTemplate1Frame1" translatesAutoresizingMaskIntoConstraints="NO" id="wdS-rp-FFR">
-                                <rect key="frame" x="130" y="338" width="240" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="bC9-t3-XUU"/>
-                                    <constraint firstAttribute="width" constant="240" id="tfg-qr-YcY"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="xMasTemplate1Frame1Mask" translatesAutoresizingMaskIntoConstraints="NO" id="gw8-g1-poQ">
-                                <rect key="frame" x="130" y="500" width="240" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="J2m-3l-aZQ"/>
-                                    <constraint firstAttribute="height" constant="128" id="lA4-eJ-6Cl"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Jc4-1s-1HE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" symbolic="YES" id="14s-n2-4zn"/>
-                            <constraint firstItem="wdS-rp-FFR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="130" id="7YO-z0-r1t"/>
                             <constraint firstItem="Jc4-1s-1HE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="8Tr-5d-3Gq"/>
                             <constraint firstItem="YI8-dJ-ibn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9cU-Au-F9D"/>
                             <constraint firstItem="YI8-dJ-ibn" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="AUT-4M-cXN"/>
@@ -92,15 +77,11 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Jc4-1s-1HE" secondAttribute="trailing" constant="64" id="E9g-zq-TFa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GNi-hI-lNT" secondAttribute="bottom" constant="81" id="FEY-ov-bd5"/>
                             <constraint firstItem="MFF-DV-Kis" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="120" id="Fpj-gm-ELP"/>
-                            <constraint firstItem="gw8-g1-poQ" firstAttribute="leading" secondItem="wdS-rp-FFR" secondAttribute="leading" id="GtW-qf-X5j"/>
-                            <constraint firstItem="gw8-g1-poQ" firstAttribute="centerX" secondItem="wdS-rp-FFR" secondAttribute="centerX" id="HoF-ld-XxI"/>
-                            <constraint firstItem="wdS-rp-FFR" firstAttribute="top" secondItem="MFF-DV-Kis" secondAttribute="bottom" constant="28" id="NJc-5I-VPO"/>
                             <constraint firstItem="hZQ-Sh-CFa" firstAttribute="centerY" secondItem="MFF-DV-Kis" secondAttribute="centerY" id="OrG-pO-Kkk"/>
                             <constraint firstItem="hZQ-Sh-CFa" firstAttribute="leading" secondItem="MFF-DV-Kis" secondAttribute="trailing" constant="64" id="REF-qY-ZL9"/>
                             <constraint firstItem="7zD-Z1-YNA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="64" id="TdA-3f-gap"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GNi-hI-lNT" secondAttribute="trailing" constant="91" id="ZWp-ye-PlJ"/>
                             <constraint firstItem="JsZ-0W-3jV" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="bg5-Gz-g2G"/>
-                            <constraint firstItem="gw8-g1-poQ" firstAttribute="top" secondItem="wdS-rp-FFR" secondAttribute="bottom" constant="34" id="coK-Oc-RPV"/>
                             <constraint firstItem="JsZ-0W-3jV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ecT-AB-t4w"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hZQ-Sh-CFa" secondAttribute="trailing" constant="64" id="fAS-7u-cf2"/>
                             <constraint firstItem="MFF-DV-Kis" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="110" id="jXD-6B-nQa"/>
@@ -124,8 +105,6 @@
     <resources>
         <image name="background" width="312" height="223.44000244140625"/>
         <image name="videoPlaceHolder" width="980" height="680"/>
-        <image name="xMasTemplate1Frame1" width="492" height="610"/>
-        <image name="xMasTemplate1Frame1Mask" width="492" height="610"/>
         <image name="xMasTemplate1Frame2" width="1227" height="942"/>
     </resources>
 </document>
