@@ -198,12 +198,12 @@ class ViewController: UIViewController {
         videoComposition.animationTool = VAConstants.createAnimationTool(withBackgoundImage: (backgroundImageView.image?.cgImage)!, withSize: finalVideoSize)
         
         
-       exportNewlyComposedVideo(composition: mixComposition, videoComposition: videoComposition)
+       exportNewlyComposedVideo(composition: mixComposition, videoComposition: videoComposition, audioMix: AVMutableAudioMix())
         
     }
 
     
-    func exportNewlyComposedVideo(composition mixComposition: AVMutableComposition, videoComposition: AVMutableVideoComposition) {
+    func exportNewlyComposedVideo(composition mixComposition: AVMutableComposition, videoComposition: AVMutableVideoComposition, audioMix: AVMutableAudioMix) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .long
@@ -218,7 +218,7 @@ class ViewController: UIViewController {
         exporter.outputFileType = AVFileType.mov
         exporter.shouldOptimizeForNetworkUse = true
         exporter.videoComposition = videoComposition
-        //        exporter.audioMix = audioMix
+        exporter.audioMix = audioMix
         
         print("Starting export asynchronously...")
         // Perform export asynchronously
@@ -259,6 +259,23 @@ class ViewController: UIViewController {
         mutableVideoComposition.instructions = [mutableVideoCompositionInstruction]
         mutableVideoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
         mutableVideoComposition.renderSize = UIScreen.main.bounds.size
+        
+        // Add audio track
+        let audioMix = AVMutableAudioMix()
+        let mutableAudioComposition = mutableComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
+        let audioAssetTrack = firstAsset.tracks(withMediaType: .audio).first!
+        
+        do {
+            try mutableAudioComposition?.insertTimeRange(timeRange, of: audioAssetTrack, at: CMTime.zero)
+        } catch {
+            fatalError("Error inserting time range into first audio track! :\(error)")
+        }
+        
+        let mutableAudioMixInputParameter = AVMutableAudioMixInputParameters(track: audioAssetTrack)
+        
+        mutableAudioMixInputParameter.setVolume(1.0, at: CMTime.zero)
+        
+        audioMix.inputParameters = [mutableAudioMixInputParameter]
         
         // Create and add animation tool
         let backgroundLayer = CALayer()
@@ -301,7 +318,7 @@ class ViewController: UIViewController {
         
         mutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
         
-        exportNewlyComposedVideo(composition: mutableComposition, videoComposition: mutableVideoComposition)
+        exportNewlyComposedVideo(composition: mutableComposition, videoComposition: mutableVideoComposition,audioMix: audioMix)
     }
     
     
