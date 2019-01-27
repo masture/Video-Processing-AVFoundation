@@ -20,6 +20,10 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="JsZ-0W-3jV">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="K5T-CA-2zS" appends="YES" id="ydf-Bc-hfv"/>
+                                </connections>
                             </imageView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YI8-dJ-ibn">
                                 <rect key="frame" x="342" y="366" width="340" height="36"/>
@@ -38,6 +42,7 @@
                             </slider>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="xMasTemplate1Frame2" translatesAutoresizingMaskIntoConstraints="NO" id="MFF-DV-Kis">
                                 <rect key="frame" x="120" y="130" width="300" height="180"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="BDZ-fN-ZLV"/>
                                     <constraint firstAttribute="width" constant="300" id="QNr-2t-Ldn"/>
@@ -66,8 +71,25 @@
                                     <action selector="recordPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xuO-A4-Omu"/>
                                 </connections>
                             </button>
+                            <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K18-nO-Vz7" userLabel="redView">
+                                <rect key="frame" x="318" y="481" width="240" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.054901960780000002" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Bfb-x2-yXT" appends="YES" id="Sm9-bN-Id7"/>
+                                    <outletCollection property="gestureRecognizers" destination="dxm-iw-Ucj" appends="YES" id="Rie-Y4-xKr"/>
+                                    <outletCollection property="gestureRecognizers" destination="ReV-am-YTj" appends="YES" id="4NN-Jk-qlG"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Jc4-1s-1HE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" symbolic="YES" id="14s-n2-4zn"/>
                             <constraint firstItem="Jc4-1s-1HE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="8Tr-5d-3Gq"/>
@@ -98,6 +120,26 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="Bfb-x2-yXT">
+                    <connections>
+                        <action selector="handlePanGesture:" destination="BYZ-38-t0r" id="KRk-Zf-DI4"/>
+                    </connections>
+                </panGestureRecognizer>
+                <pinchGestureRecognizer id="dxm-iw-Ucj">
+                    <connections>
+                        <action selector="handlePinch:" destination="BYZ-38-t0r" id="Q4Q-iD-GNV"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <rotationGestureRecognizer id="ReV-am-YTj">
+                    <connections>
+                        <action selector="handleRotation:" destination="BYZ-38-t0r" id="L8Q-qx-OiF"/>
+                    </connections>
+                </rotationGestureRecognizer>
+                <tapGestureRecognizer id="K5T-CA-2zS">
+                    <connections>
+                        <action selector="handleTap:" destination="BYZ-38-t0r" id="6wo-Io-uEf"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="17.805755395683455" y="21.582733812949641"/>
         </scene>

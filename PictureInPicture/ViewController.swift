@@ -26,6 +26,58 @@ class ViewController: UIViewController {
     var firstAsset: AVURLAsset!
     var secondAsset: AVURLAsset!
     
+    var redViewPosition: CGPoint!
+    
+    // MARK: - Gesture handling
+    
+    @IBAction func handlePanGesture(_ sender: UIPanGestureRecognizer) {
+        
+        // #Option 1
+//        if sender.state == .began {
+//            // Store the initila state
+//            redViewPosition = sender.view?.center
+//        }
+//
+//        let card = sender.view!
+//        let point = sender.translation(in: view)
+//        card.center = CGPoint(x: redViewPosition.x + point.x, y: redViewPosition.y + point.y)
+//
+////        // Bring it ack to original position
+////        if sender.state == .ended {
+////            UIView.animate(withDuration: 0.3) {
+////                card.center = self.redViewPosition
+////            }
+////        }
+        
+        // #Option 2
+        if let card = sender.view {
+        let translation = sender.translation(in: view)
+        card.center = CGPoint(x: card.center.x + translation.x, y: card.center.y + translation.y)
+            sender.setTranslation(CGPoint.zero, in: view)
+        
+        }
+    }
+    
+    @IBAction func handlePinch(_ sender: UIPinchGestureRecognizer) {
+        
+        sender.view?.transform = (sender.view?.transform.scaledBy(x: sender.scale, y: sender.scale))!
+        sender.scale = 1
+        
+        
+    }
+    
+    
+    @IBAction func handleRotation(_ sender: UIRotationGestureRecognizer) {
+        
+        sender.view?.transform = (sender.view?.transform.rotated(by: sender.rotation))!
+        sender.rotation = 0
+    }
+    
+    @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
+        print("Tapped: \(sender.view)")
+    }
+    
+    
     fileprivate func loadVideoAssets() {
         let videoURL = Bundle.main.url(forResource: "IMG_1354", withExtension: "m4v")!
         
@@ -42,6 +94,7 @@ class ViewController: UIViewController {
             self.isSecondAssetLoaded = true
         }
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -239,6 +292,7 @@ class ViewController: UIViewController {
         let firstAddedMutableVideoTrack = mutableComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
         
         let timeRange = CMTimeRange(start: CMTime.zero, duration: firstAsset.duration)
+        
         let firstVideoTrackOfFirstAsset = firstAsset.tracks(withMediaType: .video).first!
         
         do {
@@ -252,7 +306,9 @@ class ViewController: UIViewController {
         mutableVideoCompositionInstruction.timeRange = timeRange
         
         let mutableVideoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: firstAddedMutableVideoTrack!)
+        
         mutableVideoLayerInstruction.setTransform(firstVideoTrackOfFirstAsset.preferredTransform, at: CMTime.zero)
+        
         mutableVideoCompositionInstruction.layerInstructions = [mutableVideoLayerInstruction]
         
         let mutableVideoComposition = AVMutableVideoComposition()
@@ -287,10 +343,6 @@ class ViewController: UIViewController {
         let topLeftPosition = CGPoint(x: frameOfFirstVideo.center.x - (frameOfFirstVideo.bounds.width/2), y: UIScreen.main.bounds.height - frameOfFirstVideo.center.y - frameOfFirstVideo.bounds.height/2)
         videoLayer.frame = CGRect(origin: topLeftPosition, size:frameOfFirstVideo.bounds.size)
         
-        
-        // Add masking specifically for the xMasTemplate1Frame2 (mask image name is: xMasTemplate1Frame2Mask)
-
-        
         let diplayFrameLayer = CALayer()
         diplayFrameLayer.frame = videoLayer.frame
         diplayFrameLayer.setAffineTransform(frameOfFirstVideo.transform.inverted())
@@ -298,6 +350,7 @@ class ViewController: UIViewController {
         diplayFrameLayer.masksToBounds = true
         diplayFrameLayer.contentsGravity = .resizeAspect
         
+        // Add masking specifically for the xMasTemplate1Frame2 (mask image name is: xMasTemplate1Frame2Mask)
         let maskLayer = CALayer()
         maskLayer.contents = UIImage(named: "xMasTemplate1Frame2Mask")?.cgImage
         maskLayer.frame = diplayFrameLayer.bounds
@@ -306,14 +359,11 @@ class ViewController: UIViewController {
         videoLayer.masksToBounds = true
         videoLayer.setAffineTransform(frameOfFirstVideo.transform.inverted())
         
-        
         let parentLayer = CALayer()
         parentLayer.frame = UIScreen.main.bounds
         
         parentLayer.addSublayer(backgroundLayer)
         parentLayer.addSublayer(videoLayer)
-        // Add masking layer on top of video layer
-//        parentLayer.addSublayer(maskLayer)
         parentLayer.addSublayer(diplayFrameLayer)
         
         mutableVideoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
@@ -397,4 +447,8 @@ extension ViewController: VideoCompositionManagerProtocol {
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+
+    
+    
 }
