@@ -384,7 +384,6 @@ class ViewController: UIViewController {
     }
     
 
-    
     func exportDidFinish(_ session: AVAssetExportSession) {
         
         guard session.status == AVAssetExportSession.Status.completed,
