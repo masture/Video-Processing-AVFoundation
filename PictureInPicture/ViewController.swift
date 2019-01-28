@@ -383,7 +383,7 @@ class ViewController: UIViewController {
         exportNewlyComposedVideo(composition: mutableComposition, videoComposition: mutableVideoComposition,audioMix: audioMix)
     }
     
-    
+
     
     func exportDidFinish(_ session: AVAssetExportSession) {
         
