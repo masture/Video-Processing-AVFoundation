@@ -87,6 +87,17 @@
                                     <outletCollection property="gestureRecognizers" destination="ReV-am-YTj" appends="YES" id="4NN-Jk-qlG"/>
                                 </connections>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ee4-dj-Mnv">
+                                <rect key="frame" x="20" y="40" width="163" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="m4T-W8-dWV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <state key="normal" title="Inspect Red View"/>
+                                <connections>
+                                    <action selector="inspectRedView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ivg-PW-C8g"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
@@ -108,8 +119,10 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hZQ-Sh-CFa" secondAttribute="trailing" constant="64" id="fAS-7u-cf2"/>
                             <constraint firstItem="MFF-DV-Kis" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="110" id="jXD-6B-nQa"/>
                             <constraint firstItem="JsZ-0W-3jV" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="jq0-Fo-aEC"/>
+                            <constraint firstItem="ee4-dj-Mnv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="kwc-DY-BPt"/>
                             <constraint firstItem="GNi-hI-lNT" firstAttribute="leading" secondItem="7zD-Z1-YNA" secondAttribute="trailing" constant="64" id="lyd-EL-4e3"/>
                             <constraint firstItem="GNi-hI-lNT" firstAttribute="centerY" secondItem="7zD-Z1-YNA" secondAttribute="centerY" id="pzb-8Z-qME"/>
+                            <constraint firstItem="ee4-dj-Mnv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="waU-4s-6pY"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -117,6 +130,10 @@
                         <outlet property="backgroundImageView" destination="JsZ-0W-3jV" id="iUW-fb-ma6"/>
                         <outlet property="frameOfFirstVideo" destination="MFF-DV-Kis" id="qtL-nw-Z6s"/>
                         <outlet property="frameOfSecondVideo" destination="GNi-hI-lNT" id="vtJ-7j-0JX"/>
+                        <outlet property="panGestureRecogniser" destination="Bfb-x2-yXT" id="d7k-eB-jTF"/>
+                        <outlet property="pinchGestureRecogniser" destination="dxm-iw-Ucj" id="g5o-yG-ch1"/>
+                        <outlet property="redView" destination="K18-nO-Vz7" id="yx5-T3-mCv"/>
+                        <outlet property="rotateGestureRecogniser" destination="ReV-am-YTj" id="GvF-rF-9RI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

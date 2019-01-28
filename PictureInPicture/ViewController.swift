@@ -28,6 +28,11 @@ class ViewController: UIViewController {
     
     var redViewPosition: CGPoint!
     
+    
+    @IBOutlet var panGestureRecogniser: UIPanGestureRecognizer!
+    @IBOutlet var pinchGestureRecogniser: UIPinchGestureRecognizer!
+    @IBOutlet var rotateGestureRecogniser: UIRotationGestureRecognizer!
+    
     // MARK: - Gesture handling
     
     @IBAction func handlePanGesture(_ sender: UIPanGestureRecognizer) {
@@ -95,11 +100,18 @@ class ViewController: UIViewController {
         }
     }
 
+    private func setDelegateOfGestureRecognisers() {
+        panGestureRecogniser.delegate = self
+        pinchGestureRecogniser.delegate = self
+        rotateGestureRecogniser.delegate = self
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         loadVideoAssets()
+        setDelegateOfGestureRecognisers()
+        
     }
 
     @IBAction func sliderChanged(_ sender: UISlider) {
@@ -408,6 +420,14 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var redView: UIView!
+    @IBAction func inspectRedView(_ sender: UIButton) {
+        print("Center: \(redView.center)")
+        print("Frame: \(redView.frame)")
+        print("Bounds: \(redView.bounds)")
+        print("Transform: \(redView.transform)")
+    }
+    
 }
 
 extension ViewController: AVVideoCompositionValidationHandling {
@@ -451,4 +471,10 @@ extension ViewController: VideoCompositionManagerProtocol {
 
     
     
+}
+
+extension ViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
 }
